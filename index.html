@@ -61,6 +61,7 @@
     <div class="footer">
       Built for you to get a little better, one checkbox at a time.
       <a id="mockingbirdLink" class="small-link">Mockingbird Motivation</a>
+      <a id="clearAllLink" class="small-link">Clear All Checkboxes</a>
     </div>
   </div>
 
@@ -273,6 +274,16 @@
       overlay.style.display="none";
       motivationVideo.src="";
     }
+
+    /* Clear All Checkboxes */
+    const clearAllLink = document.getElementById("clearAllLink");
+
+    clearAllLink.addEventListener("click", () => {
+      localStorage.removeItem("goalieWorkout");
+      const activeDay = document.querySelector(".day-btn.active").dataset.day;
+      loadDay(activeDay);
+    });
+
   </script>
 </body>
 </html>
