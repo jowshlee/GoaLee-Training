@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Goalie Hockey Workout</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0b1b2b;
+      color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .app {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #c0d4f5;
+      margin-bottom: 20px;
+    }
+    .day-selector {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .day-btn {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #1f3b5c;
+      color: #f5f5f5;
+      font-size: 0.9rem;
+    }
+    .day-btn.active {
+      background: #3ea6ff;
+      color: #0b1b2b;
+      font-weight: 600;
+    }
+    .card {
+      background: #132338;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+    .exercise {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .exercise label {
+      cursor: pointer;
+    }
+    .sets {
+      color: #c0d4f5;
+      font-size: 0.85rem;
+    }
+    .progress-container {
+      margin-top: 10px;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 12px;
+      background: #0b1b2b;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #3ea6ff;
+      transition: width 0.2s ease;
+    }
+    .progress-text {
+      font-size: 0.85rem;
+      margin-top: 4px;
+      text-align: right;
+      color: #c0d4f5;
+    }
+    .toggle-explain {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #3ea6ff;
+      text-decoration: underline;
+    }
+    .explanations {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .explanations h3 {
+      margin-top: 0;
+      font-size: 1rem;
+    }
+    .explanations p {
+      margin: 4px 0 8px;
+    }
+    .shoulder-note {
+      font-size: 0.8rem;
+      color: #ffcc99;
+      margin-top: 8px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #c0d4f5;
+      margin-top: 20px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Goalie Hockey Workout</h1>
+    <div class="subtitle">
+      Pick today’s day, check the boxes, and fill the bar. No overhead work.
+    </div>
+
+    <div class="day-selector">
+      <button class="day-btn active" data-day="1">Day 1 – Strength + Core</button>
+      <button class="day-btn" data-day="2">Day 2 – Speed + Agility</button>
+      <button class="day-btn" data-day="3">Day 3 – Mobility + Conditioning</button>
+      <button class="day-btn" data-day="4">Day 4 – Explosive + Strength</button>
+    </div>
+
+    <div id="day-content"></div>
+
+    <div class="footer">
+      Built for you to get a little better, one checkbox at a time.
+    </div>
+  </div>
+
+  <script>
+    const workouts = {
+      1: {
+        title: "Day 1 – Strength + Core (Shoulder‑Safe)",
+        exercises: [
+          { id: "goblet_squats", name: "Goblet Squats", sets: "3 × 10" },
+          { id: "split_squats", name: "Split Squats (each leg)", sets: "3 × 8" },
+          { id: "band_rows", name: "Band Rows", sets: "3 × 12" },
+          { id: "db_deadlifts", name: "Dumbbell Deadlifts", sets: "3 × 10" },
+          { id: "mb_chest_pass", name: "Medicine Ball Chest Pass (low angle)", sets: "3 × 8" },
+          { id: "core_plank", name: "Plank", sets: "3 × 30 sec" },
+          { id: "core_dead_bug", name: "Dead Bug (each side)", sets: "3 × 10" },
+          { id: "core_side_plank", name: "Side Plank (each side)", sets: "3 × 20 sec" }
+        ]
+      },
+      2: {
+        title: "Day 2 – Speed + Agility + Reaction",
+        exercises: [
+          { id: "jump_rope", name: "Jump Rope Intervals", sets: "5 × 30 sec" },
+          { id: "lateral_hops", name: "Lateral Line Hops", sets: "3 × 20 sec" },
+          { id: "reaction_wall", name: "Reaction Ball Wall Drill", sets: "3 × 45 sec" },
+          { id: "oblong_chaos", name: "Oblong Ball Chaos Drill", sets: "3 × 30 sec" },
+          { id: "band_lateral_walks", name: "Band Lateral Walks", sets: "3 × 12 steps each way" },
+          { id: "short_sprints", name: "Short Sprint Bursts", sets: "6 × 10 yards" }
+        ]
+      },
+      3: {
+        title: "Day 3 – Mobility + Stability + Conditioning",
+        exercises: [
+          { id: "hip_flow", name: "Hip Mobility Flow", sets: "8 min" },
+          { id: "thoracic_mobility", name: "Thoracic Spine Mobility", sets: "5 min" },
+          { id: "band_external_rot", name: "Band External Rotations (light)", sets: "2 × 12" },
+          { id: "mb_slams", name: "Medicine Ball Slams (chest‑level)", sets: "3 × 10" },
+          { id: "low_cond", name: "Low‑Impact Conditioning", sets: "10–12 min" }
+        ]
+      },
+      4: {
+        title: "Day 4 – Strength + Explosive (Shoulder‑Safe)",
+        exercises: [
+          { id: "db_step_ups", name: "Dumbbell Step‑Ups (each leg)", sets: "3 × 10" },
+          { id: "band_skater", name: "Band‑Resisted Skater Strides", sets: "3 × 12" },
+          { id: "mb_rot_toss", name: "Medicine Ball Rotational Toss (low angle)", sets: "3 × 8" },
+          { id: "glute_bridge_march", name: "Glute Bridge March", sets: "3 × 12" },
+          { id: "reaction_ground", name: "Reaction Ball Ground Chase", sets: "3 × 30 sec" }
+        ]
+      }
+    };
+
+    const explanations = {
+      goblet_squats: "Hold a dumbbell at your chest, feet shoulder‑width, sit back and down, then stand. Builds leg drive for pushes.",
+      split_squats: "One foot forward, one back. Drop the back knee toward the floor, then stand. Great for stance transitions.",
+      band_rows: "Attach band at chest height, pull toward you, squeezing shoulder blades. Safe pulling for shoulder and upper back.",
+      db_deadlifts: "Dumbbells in hands, hinge at hips with a flat back, then stand tall. Builds posterior chain for stability.",
+      mb_chest_pass: "Hold medicine ball at chest, step and push it forward to a wall or partner at chest height. No overhead.",
+      core_plank: "On elbows and toes, keep body straight. Great for core stability in stance.",
+      core_dead_bug: "On your back, arms up, legs bent. Lower opposite arm and leg, then switch. Teaches core control.",
+      core_side_plank: "On your side, elbow under shoulder, lift hips. Helps lateral stability in crease.",
+      jump_rope: "Light jumps with rope, staying relaxed. Builds quick feet and conditioning.",
+      lateral_hops: "Hop side‑to‑side over a line, staying low. Mimics crease shuffles.",
+      reaction_wall: "Throw reaction ball at wall, catch or track bounce. Trains glove and eye coordination.",
+      oblong_chaos: "Bounce oblong ball on ground, react to unpredictable direction. Great for reaction and fun.",
+      band_lateral_walks: "Band around legs, small side steps while staying low. Strengthens hips for butterfly.",
+      short_sprints: "Explosive 10‑yard sprints, full rest between. Builds first‑step speed.",
+      hip_flow: "Sequence of hip stretches (90/90, hip flexor, adductor, butterfly) to open hips for butterfly.",
+      thoracic_mobility: "Gentle upper‑back rotations and cat‑cow to help reach and rotation without stressing shoulder.",
+      band_external_rot: "Elbow at side, forearm across belly, rotate forearm outward against band. Light shoulder stability.",
+      mb_slams: "Lift ball to chest height and slam to ground. Keep arms below shoulder level.",
+      low_cond: "Easy conditioning: jump rope, fast walk, or bike at low impact.",
+      db_step_ups: "Step onto a sturdy bench with dumbbells, drive through front leg, then step down. Builds leg power.",
+      band_skater: "Band around waist or legs, push laterally like skating, then recover. Hockey‑specific power.",
+      mb_rot_toss: "Hold ball at hip, rotate and toss to wall at chest level. Builds rotational power without overhead.",
+      glute_bridge_march: "On your back, hips lifted, march one leg at a time. Great for core and glutes.",
+      reaction_ground: "Bounce reaction ball on ground and chase or track it. Fun reaction drill."
+    };
+
+    const dayContent = document.getElementById("day-content");
+    const dayButtons = document.querySelectorAll(".day-btn");
+
+    function loadDay(day) {
+      const data = workouts[day];
+      dayContent.innerHTML = "";
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const title = document.createElement("h2");
+      title.textContent = data.title;
+      card.appendChild(title);
+
+      const shoulderNote = document.createElement("div");
+      shoulderNote.className = "shoulder-note";
+      shoulderNote.textContent = "Reminder: Avoid overhead movements. If anything hurts the shoulder, skip it.";
+      card.appendChild(shoulderNote);
+
+      const list = document.createElement("div");
+      data.exercises.forEach(ex => {
+        const exDiv = document.createElement("div");
+        exDiv.className = "exercise";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = `${day}_${ex.id}`;
+        checkbox.checked = loadChecked(checkbox.id);
+        checkbox.addEventListener("change", updateProgress);
+
+        const label = document.createElement("label");
+        label.setAttribute("for", checkbox.id);
+        label.innerHTML = `<strong>${ex.name}</strong><br><span class="sets">${ex.sets}</span>`;
+
+        exDiv.appendChild(checkbox);
+        exDiv.appendChild(label);
+        list.appendChild(exDiv);
+      });
+
+      card.appendChild(list);
+
+      const progressContainer = document.createElement("div");
+      progressContainer.className = "progress-container";
+
+      const barBg = document.createElement("div");
+      barBg.className = "progress-bar-bg";
+
+      const barFill = document.createElement("div");
+      barFill.className = "progress-bar-fill";
+      barFill.id = "progress-fill";
+
+      barBg.appendChild(barFill);
+      progressContainer.appendChild(barBg);
+
+      const progressText = document.createElement("div");
+      progressText.className = "progress-text";
+      progressText.id = "progress-text";
+      progressContainer.appendChild(progressText);
+
+      card.appendChild(progressContainer);
+
+      const toggleExplain = document.createElement("div");
+      toggleExplain.className = "toggle-explain";
+      toggleExplain.textContent = "Show exercise explanations";
+      toggleExplain.addEventListener("click", () => {
+        const exp = document.getElementById("explanations");
+        const visible = exp.style.display === "block";
+        exp.style.display = visible ? "none" : "block";
+        toggleExplain.textContent = visible
+          ? "Show exercise explanations"
+          : "Hide exercise explanations";
+      });
+      card.appendChild(toggleExplain);
+
+      const expDiv = document.createElement("div");
+      expDiv.className = "explanations";
+      expDiv.id = "explanations";
+
+      const expTitle = document.createElement("h3");
+      expTitle.textContent = "Exercise explanations";
+      expDiv.appendChild(expTitle);
+
+      data.exercises.forEach(ex => {
+        const p = document.createElement("p");
+        p.innerHTML = `<strong>${ex.name}:</strong> ${explanations[ex.id] || ""}`;
+        expDiv.appendChild(p);
+      });
+
+      card.appendChild(expDiv);
+
+      dayContent.appendChild(card);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const checkboxes = dayContent.querySelectorAll("input[type='checkbox']");
+      let done = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          done++;
+          saveChecked(cb.id, true);
+        } else {
+          saveChecked(cb.id, false);
+        }
+      });
+      const total = checkboxes.length || 1;
+      const percent = Math.round((done / total) * 100);
+      const fill = document.getElementById("progress-fill");
+      const text = document.getElementById("progress-text");
+      if (fill && text) {
+        fill.style.width = percent + "%";
+        text.textContent = `Day progress: ${percent}% (${done}/${total} done)`;
+      }
+    }
+
+    function saveChecked(id, value) {
+      const data = JSON.parse(localStorage.getItem("goalieWorkout") || "{}");
+      data[id] = value;
+      localStorage.setItem("goalieWorkout", JSON.stringify(data));
+    }
+
+    function loadChecked(id) {
+      const data = JSON.parse(localStorage.getItem("goalieWorkout") || "{}");
+      return !!data[id];
+    }
+
+    dayButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        dayButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const day = btn.getAttribute("data-day");
+        loadDay(day);
+      });
+    });
+
+    // initial load
+    loadDay("1");
+  </script>
+</body>
+</html>
