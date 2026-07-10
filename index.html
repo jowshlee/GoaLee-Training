@@ -124,6 +124,11 @@
       margin-top: 20px;
       opacity: 0.8;
     }
+    .reward-img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -148,6 +153,31 @@
   </div>
 
   <script>
+    // Meme pack (20 starter memes)
+    const memes = [
+      "https://i.imgflip.com/7y3l5u.jpg",
+      "https://i.imgflip.com/7y3l6g.jpg",
+      "https://i.imgflip.com/7y3l7p.jpg",
+      "https://i.imgflip.com/7y3l8x.jpg",
+      "https://i.imgflip.com/7y3l9z.jpg",
+      "https://i.imgflip.com/7y3laa.jpg",
+      "https://i.imgflip.com/7y3lbk.jpg",
+      "https://i.imgflip.com/7y3lcn.jpg",
+      "https://i.imgflip.com/7y3ldo.jpg",
+      "https://i.imgflip.com/7y3leo.jpg",
+      "https://i.imgflip.com/7y3lfu.jpg",
+      "https://i.imgflip.com/7y3lgw.jpg",
+      "https://i.imgflip.com/7y3lhx.jpg",
+      "https://i.imgflip.com/7y3lij.jpg",
+      "https://i.imgflip.com/7y3ljk.jpg",
+      "https://i.imgflip.com/7y3lkk.jpg",
+      "https://i.imgflip.com/7y3llm.jpg",
+      "https://i.imgflip.com/7y3lmn.jpg",
+      "https://i.imgflip.com/7y3lnp.jpg",
+      "https://i.imgflip.com/7y3loq.jpg"
+    ];
+
+    // Workout data
     const workouts = {
       1: {
         title: "Day 1 – Strength + Core (Shoulder‑Safe)",
@@ -196,38 +226,38 @@
     };
 
     const explanations = {
-      goblet_squats: "Hold a dumbbell at your chest, feet shoulder‑width, sit back and down, then stand. Builds leg drive for pushes.",
-      split_squats: "One foot forward, one back. Drop the back knee toward the floor, then stand. Great for stance transitions.",
-      band_rows: "Attach band at chest height, pull toward you, squeezing shoulder blades. Safe pulling for shoulder and upper back.",
-      db_deadlifts: "Dumbbells in hands, hinge at hips with a flat back, then stand tall. Builds posterior chain for stability.",
-      mb_chest_pass: "Hold medicine ball at chest, step and push it forward to a wall or partner at chest height. No overhead.",
-      core_plank: "On elbows and toes, keep body straight. Great for core stability in stance.",
-      core_dead_bug: "On your back, arms up, legs bent. Lower opposite arm and leg, then switch. Teaches core control.",
-      core_side_plank: "On your side, elbow under shoulder, lift hips. Helps lateral stability in crease.",
-      jump_rope: "Light jumps with rope, staying relaxed. Builds quick feet and conditioning.",
-      lateral_hops: "Hop side‑to‑side over a line, staying low. Mimics crease shuffles.",
-      reaction_wall: "Throw reaction ball at wall, catch or track bounce. Trains glove and eye coordination.",
-      oblong_chaos: "Bounce oblong ball on ground, react to unpredictable direction. Great for reaction and fun.",
-      band_lateral_walks: "Band around legs, small side steps while staying low. Strengthens hips for butterfly.",
-      short_sprints: "Explosive 10‑yard sprints, full rest between. Builds first‑step speed.",
-      hip_flow: "Sequence of hip stretches (90/90, hip flexor, adductor, butterfly) to open hips for butterfly.",
-      thoracic_mobility: "Gentle upper‑back rotations and cat‑cow to help reach and rotation without stressing shoulder.",
-      band_external_rot: "Elbow at side, forearm across belly, rotate forearm outward against band. Light shoulder stability.",
-      mb_slams: "Lift ball to chest height and slam to ground. Keep arms below shoulder level.",
-      low_cond: "Easy conditioning: jump rope, fast walk, or bike at low impact.",
-      db_step_ups: "Step onto a sturdy bench with dumbbells, drive through front leg, then step down. Builds leg power.",
-      band_skater: "Band around waist or legs, push laterally like skating, then recover. Hockey‑specific power.",
-      mb_rot_toss: "Hold ball at hip, rotate and toss to wall at chest level. Builds rotational power without overhead.",
-      glute_bridge_march: "On your back, hips lifted, march one leg at a time. Great for core and glutes.",
-      reaction_ground: "Bounce reaction ball on ground and chase or track it. Fun reaction drill."
+      goblet_squats: "Hold a dumbbell at your chest, feet shoulder‑width, sit back and down, then stand.",
+      split_squats: "One foot forward, one back. Drop the back knee toward the floor, then stand.",
+      band_rows: "Attach band at chest height, pull toward you, squeezing shoulder blades.",
+      db_deadlifts: "Dumbbells in hands, hinge at hips with a flat back, then stand tall.",
+      mb_chest_pass: "Hold medicine ball at chest, step and push it forward at chest height.",
+      core_plank: "On elbows and toes, keep body straight.",
+      core_dead_bug: "On your back, lower opposite arm and leg, then switch.",
+      core_side_plank: "On your side, elbow under shoulder, lift hips.",
+      jump_rope: "Light jumps with rope, staying relaxed.",
+      lateral_hops: "Hop side‑to‑side over a line, staying low.",
+      reaction_wall: "Throw reaction ball at wall, catch or track bounce.",
+      oblong_chaos: "Bounce oblong ball on ground, react to unpredictable direction.",
+      band_lateral_walks: "Band around legs, small side steps while staying low.",
+      short_sprints: "Explosive 10‑yard sprints, full rest between.",
+      hip_flow: "Sequence of hip stretches to open hips for butterfly.",
+      thoracic_mobility: "Gentle upper‑back rotations and cat‑cow.",
+      band_external_rot: "Elbow at side, rotate forearm outward against band.",
+      mb_slams: "Lift ball to chest height and slam to ground.",
+      low_cond: "Easy conditioning: jump rope, fast walk, or bike.",
+      db_step_ups: "Step onto a bench with dumbbells, then step down.",
+      band_skater: "Band around waist or legs, push laterally like skating.",
+      mb_rot_toss: "Hold ball at hip, rotate and toss to wall at chest level.",
+      glute_bridge_march: "On your back, hips lifted, march one leg at a time.",
+      reaction_ground: "Bounce reaction ball on ground and chase or track it."
     };
 
     const dayContent = document.getElementById("day-content");
     const dayButtons = document.querySelectorAll(".day-btn");
 
     function loadDay(day) {
-      const data = workouts[day];
       dayContent.innerHTML = "";
+      const data = workouts[day];
 
       const card = document.createElement("div");
       card.className = "card";
@@ -238,7 +268,7 @@
 
       const shoulderNote = document.createElement("div");
       shoulderNote.className = "shoulder-note";
-      shoulderNote.textContent = "Reminder: Avoid overhead movements. If anything hurts the shoulder, skip it.";
+      shoulderNote.textContent = "Reminder: Avoid overhead movements.";
       card.appendChild(shoulderNote);
 
       const list = document.createElement("div");
@@ -335,6 +365,22 @@
         fill.style.width = percent + "%";
         text.textContent = `Day progress: ${percent}% (${done}/${total} done)`;
       }
+
+      if (percent === 100) {
+        showRandomMeme();
+      }
+    }
+
+    function showRandomMeme() {
+      const meme = memes[Math.floor(Math.random() * memes.length)];
+      const rewardDiv = document.createElement("div");
+      rewardDiv.className = "card";
+      rewardDiv.innerHTML = `
+        <h2>Workout Complete!</h2>
+        <p>You earned a reward:</p>
+        <img src="${meme}" class="reward-img" />
+      `;
+      dayContent.appendChild(rewardDiv);
     }
 
     function saveChecked(id, value) {
@@ -357,7 +403,6 @@
       });
     });
 
-    // initial load
     loadDay("1");
   </script>
 </body>
