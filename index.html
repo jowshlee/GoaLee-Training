@@ -1,159 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <title>Goalie Hockey Workout</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0b1b2b;
-      color: #f5f5f5;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#0b1b2b;
+      --card:#132338;
+      --accent:#3ea6ff;
+      --muted:#c0d4f5;
+      --warn:#ffcc99;
+      --text:#f5f5f5;
+      --maxw:760px;
     }
-    .app {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .subtitle {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #c0d4f5;
-      margin-bottom: 20px;
-    }
-    .day-selector {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-    .day-btn {
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      background: #1f3b5c;
-      color: #f5f5f5;
-      font-size: 0.9rem;
-    }
-    .day-btn.active {
-      background: #3ea6ff;
-      color: #0b1b2b;
-      font-weight: 600;
-    }
-    .card {
-      background: #132338;
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    .card h2 {
-      margin-top: 0;
-      font-size: 1.1rem;
-    }
-    .exercise {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
-    .exercise label {
-      cursor: pointer;
-    }
-    .sets {
-      color: #c0d4f5;
-      font-size: 0.85rem;
-    }
-    .progress-container {
-      margin-top: 10px;
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 12px;
-      background: #0b1b2b;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: #3ea6ff;
-      transition: width 0.2s ease;
-    }
-    .progress-text {
-      font-size: 0.85rem;
-      margin-top: 4px;
-      text-align: right;
-      color: #c0d4f5;
-    }
-    .toggle-explain {
-      margin-top: 10px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      color: #3ea6ff;
-      text-decoration: underline;
-    }
-    .explanations {
-      margin-top: 10px;
-      font-size: 0.9rem;
-      display: none;
-    }
-    .explanations h3 {
-      margin-top: 0;
-      font-size: 1rem;
-    }
-    .explanations p {
-      margin: 4px 0 8px;
-    }
-    .shoulder-note {
-      font-size: 0.8rem;
-      color: #ffcc99;
-      margin-top: 8px;
-    }
-    .footer {
-      text-align: center;
-      font-size: 0.8rem;
-      color: #c0d4f5;
-      margin-top: 20px;
-      opacity: 0.8;
-    }
-    .reward-img {
-      width: 100%;
-      border-radius: 10px;
-      margin-top: 10px;
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    .app{max-width:var(--maxw);margin:18px auto;padding:18px;}
+    h1{margin:0 0 6px;text-align:center;font-size:1.6rem}
+    .subtitle{color:var(--muted);text-align:center;margin-bottom:16px;font-size:0.95rem}
+    .day-selector{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+    .day-btn{background:#12314a;border:0;color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+    .day-btn.active{background:var(--accent);color:#071425}
+    .card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,0.25)}
+    .card h2{margin:0 0 8px;font-size:1.05rem}
+    .shoulder-note{color:var(--warn);font-size:0.85rem;margin-bottom:8px}
+    .exercise{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+    .exercise input{margin-top:4px}
+    .exercise label{cursor:pointer;line-height:1.1}
+    .sets{color:var(--muted);font-size:0.85rem}
+    .progress-container{margin-top:10px}
+    .progress-bar-bg{width:100%;height:12px;background:#071425;border-radius:8px;overflow:hidden}
+    .progress-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#7be0ff);transition:width .18s ease}
+    .progress-text{font-size:0.85rem;color:var(--muted);text-align:right;margin-top:6px}
+    .toggle-explain{color:var(--accent);cursor:pointer;text-decoration:underline;font-size:0.9rem;margin-top:10px}
+    .explanations{display:none;margin-top:10px;font-size:0.95rem;color:var(--muted)}
+    .explanations p{margin:8px 0}
+    .footer{text-align:center;color:var(--muted);font-size:0.85rem;margin-top:10px;opacity:0.9}
+    .reward-img{width:100%;border-radius:10px;margin-top:8px}
+    .small-link{display:block;text-align:center;margin-top:8px;color:var(--accent);cursor:pointer;text-decoration:underline}
+    /* Overlay */
+    #motivationOverlay{display:none;position:fixed;inset:0;background:rgba(2,6,12,0.88);z-index:9999;align-items:center;justify-content:center;padding:18px}
+    #motivationBox{max-width:920px;width:100%;border-radius:12px;overflow:hidden;background:#071425;padding:12px;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
+    #motivationVideo{width:100%;height:auto;border-radius:8px;background:#000}
+    .close-x{position:absolute;top:14px;right:18px;color:var(--muted);font-weight:700;cursor:pointer}
+    @media (max-width:520px){
+      .day-btn{padding:8px 10px;font-size:0.85rem}
+      h1{font-size:1.3rem}
     }
   </style>
 </head>
 <body>
-  <div class="app">
+  <div class="app" role="main">
     <h1>Goalie Hockey Workout</h1>
-    <div class="subtitle">
-      Pick today’s day, check the boxes, and fill the bar. No overhead work.
-    </div>
+    <div class="subtitle">Pick today, check the boxes, fill the bar. No overhead work.</div>
 
-    <div class="day-selector">
+    <div class="day-selector" role="tablist" aria-label="Workout days">
       <button class="day-btn active" data-day="1">Day 1 – Strength + Core</button>
       <button class="day-btn" data-day="2">Day 2 – Speed + Agility</button>
       <button class="day-btn" data-day="3">Day 3 – Mobility + Conditioning</button>
       <button class="day-btn" data-day="4">Day 4 – Explosive + Strength</button>
     </div>
 
-    <div id="day-content"></div>
+    <div id="day-content" aria-live="polite"></div>
 
     <div class="footer">
       Built for you to get a little better, one checkbox at a time.
+      <a id="mockingbirdLink" class="small-link">Mockingbird Motivation</a>
+    </div>
+  </div>
+
+  <!-- Motivation Overlay -->
+  <div id="motivationOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div id="motivationBox">
+      <div style="position:relative">
+        <div class="close-x" id="overlayClose">✕</div>
+        <video id="motivationVideo" controls playsinline></video>
+      </div>
     </div>
   </div>
 
   <script>
-    // Meme pack (20 starter memes)
+    /***** CONFIG *****/
+    // Provided Google Drive file ID (converted to direct download URL)
+    // File ID from your link: 1aEp_k9_SHQSdDJKYqJaz31EE8qbnzEaQ
+    const personalVideoDirect = "https://drive.google.com/uc?export=download&id=1aEp_k9_SHQSdDJKYqJaz31EE8qbnzEaQ";
+
+    // Random hype video list (you can add more direct links or public mp4 URLs)
+    // If you want to use Google Drive links, convert them to the same uc?export=download&id=FILEID format.
+    const hypeVideos = [
+      personalVideoDirect,
+      // Example placeholders (replace with your own hosted mp4 links if desired)
+      "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+      "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.mp4"
+    ];
+
+    // Meme pack (starter). Add or replace URLs as you like.
     const memes = [
       "https://i.imgflip.com/7y3l5u.jpg",
       "https://i.imgflip.com/7y3l6g.jpg",
@@ -177,7 +118,7 @@
       "https://i.imgflip.com/7y3loq.jpg"
     ];
 
-    // Workout data
+    /***** WORKOUT DATA *****/
     const workouts = {
       1: {
         title: "Day 1 – Strength + Core (Shoulder‑Safe)",
@@ -252,148 +193,148 @@
       reaction_ground: "Bounce reaction ball on ground and chase or track it."
     };
 
+    /***** DOM & STATE *****/
     const dayContent = document.getElementById("day-content");
     const dayButtons = document.querySelectorAll(".day-btn");
+    const mockingbirdLink = document.getElementById("mockingbirdLink");
+    const overlay = document.getElementById("motivationOverlay");
+    const overlayClose = document.getElementById("overlayClose");
+    const motivationVideo = document.getElementById("motivationVideo");
 
-    function loadDay(day) {
+    // Keep track of which day's reward meme/video has been shown this session (prevents duplicates)
+    function rewardShownKey(day){ return `goalie_reward_shown_day_${day}`; }
+
+    /***** RENDERING *****/
+    function loadDay(day){
       dayContent.innerHTML = "";
       const data = workouts[day];
+      const card = document.createElement("div"); card.className = "card";
+      const title = document.createElement("h2"); title.textContent = data.title; card.appendChild(title);
 
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const title = document.createElement("h2");
-      title.textContent = data.title;
-      card.appendChild(title);
-
-      const shoulderNote = document.createElement("div");
-      shoulderNote.className = "shoulder-note";
-      shoulderNote.textContent = "Reminder: Avoid overhead movements.";
+      const shoulderNote = document.createElement("div"); shoulderNote.className = "shoulder-note";
+      shoulderNote.textContent = "Reminder: Avoid overhead movements. If anything hurts the shoulder, skip it.";
       card.appendChild(shoulderNote);
 
       const list = document.createElement("div");
       data.exercises.forEach(ex => {
-        const exDiv = document.createElement("div");
-        exDiv.className = "exercise";
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.id = `${day}_${ex.id}`;
+        const exDiv = document.createElement("div"); exDiv.className = "exercise";
+        const checkbox = document.createElement("input"); checkbox.type = "checkbox"; checkbox.id = `${day}_${ex.id}`;
         checkbox.checked = loadChecked(checkbox.id);
         checkbox.addEventListener("change", updateProgress);
-
-        const label = document.createElement("label");
-        label.setAttribute("for", checkbox.id);
+        const label = document.createElement("label"); label.setAttribute("for", checkbox.id);
         label.innerHTML = `<strong>${ex.name}</strong><br><span class="sets">${ex.sets}</span>`;
-
-        exDiv.appendChild(checkbox);
-        exDiv.appendChild(label);
-        list.appendChild(exDiv);
+        exDiv.appendChild(checkbox); exDiv.appendChild(label); list.appendChild(exDiv);
       });
-
       card.appendChild(list);
 
-      const progressContainer = document.createElement("div");
-      progressContainer.className = "progress-container";
-
-      const barBg = document.createElement("div");
-      barBg.className = "progress-bar-bg";
-
-      const barFill = document.createElement("div");
-      barFill.className = "progress-bar-fill";
-      barFill.id = "progress-fill";
-
-      barBg.appendChild(barFill);
-      progressContainer.appendChild(barBg);
-
-      const progressText = document.createElement("div");
-      progressText.className = "progress-text";
-      progressText.id = "progress-text";
+      // Progress
+      const progressContainer = document.createElement("div"); progressContainer.className = "progress-container";
+      const barBg = document.createElement("div"); barBg.className = "progress-bar-bg";
+      const barFill = document.createElement("div"); barFill.className = "progress-bar-fill"; barFill.id = "progress-fill";
+      barBg.appendChild(barFill); progressContainer.appendChild(barBg);
+      const progressText = document.createElement("div"); progressText.className = "progress-text"; progressText.id = "progress-text";
       progressContainer.appendChild(progressText);
-
       card.appendChild(progressContainer);
 
-      const toggleExplain = document.createElement("div");
-      toggleExplain.className = "toggle-explain";
+      // Explanations toggle
+      const toggleExplain = document.createElement("div"); toggleExplain.className = "toggle-explain";
       toggleExplain.textContent = "Show exercise explanations";
       toggleExplain.addEventListener("click", () => {
         const exp = document.getElementById("explanations");
         const visible = exp.style.display === "block";
         exp.style.display = visible ? "none" : "block";
-        toggleExplain.textContent = visible
-          ? "Show exercise explanations"
-          : "Hide exercise explanations";
+        toggleExplain.textContent = visible ? "Show exercise explanations" : "Hide exercise explanations";
       });
       card.appendChild(toggleExplain);
 
-      const expDiv = document.createElement("div");
-      expDiv.className = "explanations";
-      expDiv.id = "explanations";
-
-      const expTitle = document.createElement("h3");
-      expTitle.textContent = "Exercise explanations";
-      expDiv.appendChild(expTitle);
-
+      // Explanations block
+      const expDiv = document.createElement("div"); expDiv.className = "explanations"; expDiv.id = "explanations";
+      const expTitle = document.createElement("h3"); expTitle.textContent = "Exercise explanations"; expDiv.appendChild(expTitle);
       data.exercises.forEach(ex => {
-        const p = document.createElement("p");
-        p.innerHTML = `<strong>${ex.name}:</strong> ${explanations[ex.id] || ""}`;
-        expDiv.appendChild(p);
+        const p = document.createElement("p"); p.innerHTML = `<strong>${ex.name}:</strong> ${explanations[ex.id] || ""}`; expDiv.appendChild(p);
       });
-
       card.appendChild(expDiv);
 
       dayContent.appendChild(card);
       updateProgress();
     }
 
-    function updateProgress() {
+    function updateProgress(){
       const checkboxes = dayContent.querySelectorAll("input[type='checkbox']");
       let done = 0;
       checkboxes.forEach(cb => {
-        if (cb.checked) {
-          done++;
-          saveChecked(cb.id, true);
-        } else {
-          saveChecked(cb.id, false);
-        }
+        if(cb.checked) { done++; saveChecked(cb.id, true); } else { saveChecked(cb.id, false); }
       });
       const total = checkboxes.length || 1;
       const percent = Math.round((done / total) * 100);
       const fill = document.getElementById("progress-fill");
       const text = document.getElementById("progress-text");
-      if (fill && text) {
-        fill.style.width = percent + "%";
-        text.textContent = `Day progress: ${percent}% (${done}/${total} done)`;
-      }
+      if(fill && text){ fill.style.width = percent + "%"; text.textContent = `Day progress: ${percent}% (${done}/${total} done)`; }
 
-      if (percent === 100) {
+      // If complete and reward not yet shown for this day, show meme reward
+      const activeDay = document.querySelector(".day-btn.active").getAttribute("data-day");
+      if(percent === 100 && !localStorage.getItem(rewardShownKey(activeDay))){
         showRandomMeme();
+        // mark shown so it doesn't reappear repeatedly
+        localStorage.setItem(rewardShownKey(activeDay), "true");
       }
     }
 
-    function showRandomMeme() {
+    /***** MEME REWARD *****/
+    function showRandomMeme(){
       const meme = memes[Math.floor(Math.random() * memes.length)];
-      const rewardDiv = document.createElement("div");
-      rewardDiv.className = "card";
-      rewardDiv.innerHTML = `
-        <h2>Workout Complete!</h2>
-        <p>You earned a reward:</p>
-        <img src="${meme}" class="reward-img" />
-      `;
+      const rewardDiv = document.createElement("div"); rewardDiv.className = "card";
+      rewardDiv.innerHTML = `<h2>Workout Complete!</h2><p>You earned a reward:</p><img src="${meme}" class="reward-img" alt="meme reward">`;
       dayContent.appendChild(rewardDiv);
+      // Scroll to reward for visibility
+      rewardDiv.scrollIntoView({behavior:"smooth",block:"center"});
     }
 
-    function saveChecked(id, value) {
+    /***** MOCKINGBIRD MOTIVATION (overlay video) *****/
+    // When user clicks the link, pick a random hype video and play it in overlay.
+    mockingbirdLink.addEventListener("click", () => {
+      // pick random video
+      const vid = hypeVideos[Math.floor(Math.random() * hypeVideos.length)];
+      // set source and show overlay
+      motivationVideo.src = vid;
+      overlay.style.display = "flex";
+      overlay.setAttribute("aria-hidden","false");
+      // reset playback and play
+      motivationVideo.currentTime = 0;
+      // Try to play; some browsers require user gesture (click) which we have
+      motivationVideo.play().catch(()=>{ /* ignore autoplay errors */ });
+    });
+
+    // Close overlay handlers
+    overlayClose.addEventListener("click", closeOverlay);
+    overlay.addEventListener("click", (e) => {
+      // close if clicked outside the video element
+      if(e.target === overlay) closeOverlay();
+    });
+
+    // When video ends, close overlay automatically
+    motivationVideo.addEventListener("ended", closeOverlay);
+
+    function closeOverlay(){
+      motivationVideo.pause();
+      motivationVideo.currentTime = 0;
+      overlay.style.display = "none";
+      overlay.setAttribute("aria-hidden","true");
+      motivationVideo.src = ""; // release resource
+    }
+
+    /***** LOCAL STORAGE HELPERS *****/
+    function saveChecked(id, value){
       const data = JSON.parse(localStorage.getItem("goalieWorkout") || "{}");
       data[id] = value;
       localStorage.setItem("goalieWorkout", JSON.stringify(data));
     }
-
-    function loadChecked(id) {
+    function loadChecked(id){
       const data = JSON.parse(localStorage.getItem("goalieWorkout") || "{}");
       return !!data[id];
     }
 
+    /***** DAY BUTTONS *****/
     dayButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         dayButtons.forEach(b => b.classList.remove("active"));
@@ -403,7 +344,12 @@
       });
     });
 
+    // initial load
     loadDay("1");
+
+    /***** OPTIONAL: Reset weekly rewards (uncomment to enable a weekly reset) *****/
+    // Example: reset reward flags every Monday (server time not available here).
+    // You can manually clear with localStorage.removeItem(rewardShownKey('1')) etc.
   </script>
 </body>
 </html>
